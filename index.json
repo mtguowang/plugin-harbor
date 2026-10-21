@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "name": "插件港",
+  "updatedAt": "2026-10-21T05:43:28Z",
+  "plugins": [
+    {
+      "id": "ct.login",
+      "name": "中国电信登录助手",
+      "version": "1.0.0",
+      "allowHosts": [
+        "appgo.189.cn:9200",
+        "appgologin.189.cn:9031"
+      ],
+      "path": "dist/ct.login.qbpkg",
+      "sha256": "ca0a6edf8b0430af77ce3ba407ef41f9abdfb56f9ed64fe4117324a70232d9ca",
+      "description": "中国电信天翼账号登录：手机号 -> 图形验证码(按需) -> 短信验证码 -> 轮询短信状态 -> RSA 加密登录，产出原始 androidId 与 +2 位移转换 ID。",
+      "author": "protocol-reverse"
+    },
+    {
+      "id": "ysp.ck",
+      "name": "央视频 CK 获取",
+      "version": "1.0.0",
+      "allowHosts": [
+        "jacc.ysp.cctv.cn"
+      ],
+      "path": "dist/ysp.ck.qbpkg",
+      "sha256": "5ecc8ce8ad76a28f478e1cca292030535ecc21b30071c58308c89468ccf28c89",
+      "description": "央视频 JACC 原生二进制协议：字节模板替换 + 长度回填 + gzip 压缩 + 0x03 尾字节，经 jacc.ysp.cctv.cn 完成短信下发、验证码登录与 CK 拼装。响应侧解析存在契约能力缺口（无法截掉末尾 0x03），详见 plugins/README.md。",
+      "author": "protocol-reverse"
+    },
+    {
+      "id": "zto.member",
+      "name": "中通会员助手",
+      "version": "1.2.0",
+      "allowHosts": [
+        "hdgateway.zto.com",
+        "mapi.zto.com",
+        "cdn.dingxiang-inc.com",
+        "cap-8.dingxiang-inc.com"
+      ],
+      "path": "dist/zto.member.qbpkg",
+      "sha256": "9fa4fd7b2536778026cdb52be36339d7805fd18cffa593e84667d5cbb8d92dbd",
+      "description": "中通会员三条链路：①密码登录 ②短信注册 ③短信找回密码。直连 hdgateway.zto.com + mapi.zto.com，完整保留 PC 端伪装头（Origin/Referer/桌面 Chrome UA/x-clientCode/x-token）；「安全验证」为顶象滑块，走 CONTRACT.md §4.4.1 的 ui.type=webview：内联 HTML 加载 cdn.dingxiang-inc.com 的 captcha-ui v5，JS 回传 token 作为 x-captcha-code；x-captcha-id 仍取 mapi 的 captcha/image2 下发的 id。",
+      "author": "protocol-reverse"
+    }
+  ]
+}

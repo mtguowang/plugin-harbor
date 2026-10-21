@@ -1,0 +1,203 @@
+{
+  "id": "ysp.ck",
+  "name": "央视频 CK 获取",
+  "version": "1.0.0",
+  "engine": ">=1.0 <2.0",
+  "author": "protocol-reverse",
+  "description": "央视频 JACC 原生二进制协议：字节模板替换 + 长度回填 + gzip 压缩 + 0x03 尾字节，经 jacc.ysp.cctv.cn 完成短信下发、验证码登录与 CK 拼装。响应侧解析存在契约能力缺口（无法截掉末尾 0x03），详见 plugins/README.md。",
+  "allowHosts": [
+    "jacc.ysp.cctv.cn"
+  ],
+  "inputs": [
+    {
+      "key": "phone",
+      "label": "央视频手机号",
+      "type": "phone",
+      "required": true,
+      "maxLength": 11,
+      "placeholder": "请输入央视频注册手机号"
+    }
+  ],
+  "vars": {
+    "jaccInner460": "26000001af01000000000000000000000a00661160682a060b332e352e322e323638323816063330353032332c3c4003560d4f6e65506c75732c33362c3136600170048101e096053130303037a600b600c600d62e66336466303233663666326134353438333162396234326432623165326133343366323530303130323161373132e600fa0f0c1c26000bf6100f333430333332343933313139353437f61100f61200fa130c140000000024000000003500000000000000000bf6141061343739383731396438393362363334f61506504b52313130f01601fc17fc18fc19fc1af61b00f61c00f61d243735323461366235303334626332313736656131363362313130303031613331393531620b36073132303030313346203935326234633661646262343631306431336631656464386638373730303963590c6a0610706167655f6c6f67696e5f70686f6e651610706167655f6c6f67696e5f70686f6e652006360473656c664c560066007600860531303030379600a6000b790c8c9cac0b1d000027060a31343030323237393136160e2b38363133383030303030303030260036034f4e456602383628",
+    "jaccOuter460": "13000001dc0002ff01606800000000000000000066000002130000271c00000000000000003935326234633661646262343631306431336631656464386638373730303963010004a77f0000000000000000000000000001af",
+    "jaccInner466": "26000001fb01000000000000000000000a0067120000ea522a060b332e352e322e323638323816063330353032332c3c4003560d4f6e65506c75732c33362c3136600170048101e096053130303037a600b600c600d62e66336466303233663666326134353438333162396234326432623165326133343366323530303130323161373132e600fa0f0c1c26000bf6100f333430333339333536323632393832f61100f61200fa130c140000000024000000003500000000000000000bf6141061343739383731396438393362363334f61506504b52313130f01601fc17fc18fc19fc1af61b00f61c00f61d243735323461366235303334626332313736656131363362313130303031613331393531620b36073132303030313346203935326234633661646262343631306431336631656464386638373730303963590c6a0610706167655f6c6f67696e5f70686f6e651610706167655f6c6f67696e5f70686f6e652006360473656c664c560066007600860531303030379600a6000b790c8c9cac0b1d0000710900010a00681a0600160e2b383631333830303030303030302600360046063930333432345c0b0b1a0008160026203935326234633661646262343631306431336631656464386638373730303963361061343739383731396438393362363334460d4f6e65506c75732c33362c31360b28",
+    "jaccOuter466": "13000001ee0002ff01ea5200000000000000000067000002130000271c00000000000000003935326234633661646262343631306431336631656464386638373730303963010004a77f0000000000000000000000000001fb",
+    "phoneE164": "{{fn.concat('+86', input.phone)}}",
+    "reqId460": "{{fn.randomModOffset('0x3328b944c4000', '0x5af3107a4000')}}",
+    "reqId466": "{{fn.randomModOffset('0x3328b944c4000', '0x5af3107a4000')}}",
+    "guid": "952b4c6adbb4610d13f1edd8f877009c",
+    "omgid": "f3df023f6f2a454831b9b42d2b1e2a343f25001021a712",
+    "jaccInner460Raw": "",
+    "jaccInner460Built": "",
+    "jaccGz460": "",
+    "jaccOuter460Built": "",
+    "jaccPacket460": "",
+    "jaccInner466Raw": "",
+    "jaccInner466Built": "",
+    "jaccGz466": "",
+    "jaccOuter466Built": "",
+    "jaccPacket466": "",
+    "jaccPlainSend": "",
+    "jaccPlainLogin": "",
+    "yspopenid": "",
+    "accessToken": "",
+    "refreshToken": "",
+    "vusession": "",
+    "vuserid": ""
+  },
+  "flow": [
+    {
+      "id": "build460",
+      "type": "set",
+      "set": {
+        "vars": {
+          "jaccInner460Raw": "{{fn.hex(fn.bytesReplace(fn.bytesReplace(fn.unhex(vars.jaccInner460), fn.unhex('2b38363133383030303030303030'), fn.utf8(vars.phoneE164)), fn.unhex('333430333332343933313139353437'), fn.utf8(vars.reqId460)))}}",
+          "jaccInner460Built": "{{fn.hex(fn.be32Write(fn.unhex(vars.jaccInner460Raw), 1, fn.len(fn.unhex(vars.jaccInner460Raw))))}}",
+          "jaccGz460": "{{fn.hex(fn.gz(fn.unhex(vars.jaccInner460Built)))}}",
+          "jaccOuter460Built": "{{fn.hex(fn.concat(fn.slice(fn.unhex(vars.jaccOuter460), 0, 87), fn.slice(fn.be32Write(fn.unhex('00000000'), 0, fn.len(fn.unhex(vars.jaccInner460Built))), 2, 4)))}}",
+          "jaccPacket460": "{{fn.hex(fn.be32Write(fn.concat(fn.unhex(vars.jaccOuter460Built), fn.unhex(vars.jaccGz460), fn.unhex('03')), 1, fn.len(fn.concat(fn.unhex(vars.jaccOuter460Built), fn.unhex(vars.jaccGz460), fn.unhex('03')))))}}"
+        }
+      }
+    },
+    {
+      "id": "jaccSend",
+      "type": "request",
+      "request": {
+        "method": "POST",
+        "url": "https://jacc.ysp.cctv.cn/",
+        "headers": {
+          "Content-Type": "application/octet-stream",
+          "User-Agent": "okhttp/4.11.0",
+          "Accept-Encoding": "gzip",
+          "request-id": "{{vars.reqId460}}",
+          "jcegodid": "24680"
+        },
+        "body": {
+          "type": "hex",
+          "value": "{{vars.jaccPacket460}}"
+        },
+        "timeoutMs": 20000
+      },
+      "extract": [
+        {
+          "name": "raw",
+          "from": "raw"
+        }
+      ]
+    },
+    {
+      "id": "parseSend",
+      "type": "set",
+      "onFail": {
+        "goto": "askSmsCode"
+      },
+      "set": {
+        "vars": {
+          "jaccPlainSend": "{{fn.hex(fn.gunz(fn.slice(steps.jaccSend.raw, fn.indexOf(steps.jaccSend.raw, fn.unhex('1f8b')), -1)))}}"
+        }
+      }
+    },
+    {
+      "id": "askSmsCode",
+      "type": "ui",
+      "ui": {
+        "type": "text",
+        "label": "短信验证码",
+        "input": "smsCode",
+        "maxLength": 6,
+        "pattern": "^\\d{6}$",
+        "hint": "短信已下发，请输入 6 位验证码"
+      }
+    },
+    {
+      "id": "build466",
+      "type": "set",
+      "set": {
+        "vars": {
+          "jaccInner466Raw": "{{fn.hex(fn.bytesReplace(fn.bytesReplace(fn.bytesReplace(fn.unhex(vars.jaccInner466), fn.unhex('2b38363133383030303030303030'), fn.utf8(vars.phoneE164)), fn.unhex('393033343234'), fn.utf8(input.smsCode)), fn.unhex('333430333339333536323632393832'), fn.utf8(vars.reqId466)))}}",
+          "jaccInner466Built": "{{fn.hex(fn.be32Write(fn.unhex(vars.jaccInner466Raw), 1, fn.len(fn.unhex(vars.jaccInner466Raw))))}}",
+          "jaccGz466": "{{fn.hex(fn.gz(fn.unhex(vars.jaccInner466Built)))}}",
+          "jaccOuter466Built": "{{fn.hex(fn.concat(fn.slice(fn.unhex(vars.jaccOuter466), 0, 87), fn.slice(fn.be32Write(fn.unhex('00000000'), 0, fn.len(fn.unhex(vars.jaccInner466Built))), 2, 4)))}}",
+          "jaccPacket466": "{{fn.hex(fn.be32Write(fn.concat(fn.unhex(vars.jaccOuter466Built), fn.unhex(vars.jaccGz466), fn.unhex('03')), 1, fn.len(fn.concat(fn.unhex(vars.jaccOuter466Built), fn.unhex(vars.jaccGz466), fn.unhex('03')))))}}"
+        }
+      }
+    },
+    {
+      "id": "jaccVerify",
+      "type": "request",
+      "request": {
+        "method": "POST",
+        "url": "https://jacc.ysp.cctv.cn/",
+        "headers": {
+          "Content-Type": "application/octet-stream",
+          "User-Agent": "okhttp/4.11.0",
+          "Accept-Encoding": "gzip",
+          "request-id": "{{vars.reqId466}}",
+          "jcegodid": "59986"
+        },
+        "body": {
+          "type": "hex",
+          "value": "{{vars.jaccPacket466}}"
+        },
+        "timeoutMs": 20000
+      },
+      "extract": [
+        {
+          "name": "raw",
+          "from": "raw"
+        }
+      ]
+    },
+    {
+      "id": "parseLogin",
+      "type": "set",
+      "end": true,
+      "set": {
+        "vars": {
+          "jaccPlainLogin": "{{fn.hex(fn.gunz(fn.slice(steps.jaccVerify.raw, fn.indexOf(steps.jaccVerify.raw, fn.unhex('1f8b')), -1)))}}",
+          "yspopenid": "{{fn.scanAscii(fn.unhex(vars.jaccPlainLogin), '1620', 32)}}",
+          "accessToken": "{{fn.scanAscii(fn.unhex(vars.jaccPlainLogin), '262b', 43)}}",
+          "refreshToken": "{{fn.scanAscii(fn.unhex(vars.jaccPlainLogin), '362b', 43)}}",
+          "vusession": "{{fn.scanAscii(fn.unhex(vars.jaccPlainLogin), '162b', 43)}}",
+          "vuserid": "{{fn.be32Read(fn.unhex(vars.jaccPlainLogin), fn.indexOf(fn.slice(fn.unhex(vars.jaccPlainLogin), 4), fn.unhex('162b')))}}"
+        }
+      }
+    }
+  ],
+  "output": {
+    "title": "央视频 CK",
+    "fields": [
+      {
+        "label": "完整 Cookie",
+        "value": "{{fn.concat('video_omgid=', vars.omgid, '; guid=', vars.guid, '; main_login=none; vuserid=', vars.vuserid, '; vusession=', vars.vusession, '; access_token=', vars.accessToken, '; refresh_token=', vars.refreshToken, '; logintype=5; _video_qq_version=1.0; vplatform=3; yspExtentAccountList=%5B%5D; ysptokenappid=1200013; yspopenid=', vars.yspopenid)}}",
+        "copyable": true,
+        "sensitive": true,
+        "multiline": true
+      },
+      {
+        "label": "vusession",
+        "value": "{{vars.vusession}}",
+        "copyable": true,
+        "sensitive": true
+      },
+      {
+        "label": "access_token",
+        "value": "{{vars.accessToken}}",
+        "copyable": true,
+        "sensitive": true
+      },
+      {
+        "label": "refresh_token",
+        "value": "{{vars.refreshToken}}",
+        "copyable": true,
+        "sensitive": true
+      },
+      {
+        "label": "yspopenid",
+        "value": "{{vars.yspopenid}}",
+        "copyable": true
+      }
+    ]
+  }
+}

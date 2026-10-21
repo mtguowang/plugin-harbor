@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# 系统 / 编辑器
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# 临时产物
+*.tmp
+*.log
+
+# 注意：dist/*.qbpkg **要提交**（App 从这里下载），不要忽略
