@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "name": "插件港",
-  "updatedAt": "2026-10-26T08:42:32Z",
+  "updatedAt": "2026-10-26T08:51:25Z",
   "plugins": [
     {
       "id": "ct.login",
@@ -24,7 +24,7 @@
         "jacc.ysp.cctv.cn"
       ],
       "path": "dist/ysp.ck.qbpkg",
-      "sha256": "a761443b8365ba55def5f3bc46512e40109e1b742efd43de91eeb3c622e4f0d4",
+      "sha256": "700d5eb094ac01f390fc220c7fcc4cd9595ea386e6fab3ab696d2d7bad9334d3",
       "description": "央视频 JACC 原生二进制协议（App 通道 24680/59986/59987）：set.js 动态 JCE 编解码，不再依赖抓包字节模板。短信下发 → 验证码登录 → 续期自检 → CK 拼装，登录失败自动回提示重试。",
       "author": "protocol-reverse"
     },
