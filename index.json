@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "name": "插件港",
-  "updatedAt": "2026-10-21T05:43:28Z",
+  "updatedAt": "2026-10-26T08:42:32Z",
   "plugins": [
     {
       "id": "ct.login",
@@ -19,13 +19,13 @@
     {
       "id": "ysp.ck",
       "name": "央视频 CK 获取",
-      "version": "1.0.0",
+      "version": "2.0.0",
       "allowHosts": [
         "jacc.ysp.cctv.cn"
       ],
       "path": "dist/ysp.ck.qbpkg",
-      "sha256": "5ecc8ce8ad76a28f478e1cca292030535ecc21b30071c58308c89468ccf28c89",
-      "description": "央视频 JACC 原生二进制协议：字节模板替换 + 长度回填 + gzip 压缩 + 0x03 尾字节，经 jacc.ysp.cctv.cn 完成短信下发、验证码登录与 CK 拼装。响应侧解析存在契约能力缺口（无法截掉末尾 0x03），详见 plugins/README.md。",
+      "sha256": "a761443b8365ba55def5f3bc46512e40109e1b742efd43de91eeb3c622e4f0d4",
+      "description": "央视频 JACC 原生二进制协议（App 通道 24680/59986/59987）：set.js 动态 JCE 编解码，不再依赖抓包字节模板。短信下发 → 验证码登录 → 续期自检 → CK 拼装，登录失败自动回提示重试。",
       "author": "protocol-reverse"
     },
     {
