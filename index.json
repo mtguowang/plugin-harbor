@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "name": "插件港",
-  "updatedAt": "2026-10-26T08:51:25Z",
+  "updatedAt": "2026-10-26T09:17:48Z",
   "plugins": [
     {
       "id": "ct.login",
@@ -31,7 +31,7 @@
     {
       "id": "zto.member",
       "name": "中通会员助手",
-      "version": "1.2.0",
+      "version": "1.3.0",
       "allowHosts": [
         "hdgateway.zto.com",
         "mapi.zto.com",
@@ -39,8 +39,8 @@
         "cap-8.dingxiang-inc.com"
       ],
       "path": "dist/zto.member.qbpkg",
-      "sha256": "9fa4fd7b2536778026cdb52be36339d7805fd18cffa593e84667d5cbb8d92dbd",
-      "description": "中通会员三条链路：①密码登录 ②短信注册 ③短信找回密码。直连 hdgateway.zto.com + mapi.zto.com，完整保留 PC 端伪装头（Origin/Referer/桌面 Chrome UA/x-clientCode/x-token）；「安全验证」为顶象滑块，走 CONTRACT.md §4.4.1 的 ui.type=webview：内联 HTML 加载 cdn.dingxiang-inc.com 的 captcha-ui v5，JS 回传 token 作为 x-captcha-code；x-captcha-id 仍取 mapi 的 captcha/image2 下发的 id。",
+      "sha256": "ab017b07f3e4e46da99eac94171fd845ec2b5e38a3dc8844d416e18cbf529eac",
+      "description": "中通会员三条链路：①密码登录 ②短信注册 ③短信找回密码。失败时显示服务端真实原因（message + statusCode），不再是笼统的「操作失败」。",
       "author": "protocol-reverse"
     }
   ]
