@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "name": "插件港",
-  "updatedAt": "2026-10-26T09:17:48Z",
+  "updatedAt": "2026-10-26T12:58:38Z",
   "plugins": [
     {
       "id": "ct.login",
@@ -41,6 +41,18 @@
       "path": "dist/zto.member.qbpkg",
       "sha256": "ab017b07f3e4e46da99eac94171fd845ec2b5e38a3dc8844d416e18cbf529eac",
       "description": "中通会员三条链路：①密码登录 ②短信注册 ③短信找回密码。失败时显示服务端真实原因（message + statusCode），不再是笼统的「操作失败」。",
+      "author": "protocol-reverse"
+    },
+    {
+      "id": "unicom.login",
+      "name": "联通短信登录取 Token",
+      "version": "1.0.0",
+      "allowHosts": [
+        "m.client.10010.com"
+      ],
+      "path": "dist/unicom.login.qbpkg",
+      "sha256": "f224127eb4b56c3466c1878c2098d8d2173bae0b73e3d15112fc440fde17fecd",
+      "description": "中国联通短信验证码登录：RSA(PKCS#1 v1.5) 加密手机号与验证码，经 m.client.10010.com 下发短信、登录取 token_online / ecs_token。失败时显示服务端真实原因，验证码错误可重试。",
       "author": "protocol-reverse"
     }
   ]
