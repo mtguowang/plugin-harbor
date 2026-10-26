@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "name": "插件港",
-  "updatedAt": "2026-10-26T12:58:38Z",
+  "updatedAt": "2026-10-26T17:25:08Z",
   "plugins": [
     {
       "id": "ct.login",
@@ -54,6 +54,102 @@
       "sha256": "f224127eb4b56c3466c1878c2098d8d2173bae0b73e3d15112fc440fde17fecd",
       "description": "中国联通短信验证码登录：RSA(PKCS#1 v1.5) 加密手机号与验证码，经 m.client.10010.com 下发短信、登录取 token_online / ecs_token。失败时显示服务端真实原因，验证码错误可重试。",
       "author": "protocol-reverse"
+    },
+    {
+      "id": "demo.uuid",
+      "name": "UUID 批量生成",
+      "version": "1.0.0",
+      "allowHosts": [
+        "demo.invalid"
+      ],
+      "path": "dist/demo.uuid.qbpkg",
+      "sha256": "ef9213c2b826287d227b832e82b067251b2f7b33ea81131e033f4856e0e029e0",
+      "description": "本地生成随机 UUID，演示 fn.randomHex 与 set 步骤。纯本地计算，不访问网络。",
+      "author": "demo"
+    },
+    {
+      "id": "demo.hash",
+      "name": "哈希计算器",
+      "version": "1.0.0",
+      "allowHosts": [
+        "demo.invalid"
+      ],
+      "path": "dist/demo.hash.qbpkg",
+      "sha256": "fd140772f3ab3e0541acbafc38720f35cabcdc263b64faa3e8ea5c998207768b",
+      "description": "对输入文本计算 MD5 / SHA1 / SHA256 / CRC32。纯本地计算，不访问网络。",
+      "author": "demo"
+    },
+    {
+      "id": "demo.base64",
+      "name": "Base64 编解码",
+      "version": "1.0.0",
+      "allowHosts": [
+        "demo.invalid"
+      ],
+      "path": "dist/demo.base64.qbpkg",
+      "sha256": "852e396348d186d21a719d2aa4be022358f981b34d68156d349e67e232c9753c",
+      "description": "文本与 Base64 互转，演示 fn.b64 / fn.unb64。纯本地计算，不访问网络。",
+      "author": "demo"
+    },
+    {
+      "id": "demo.json",
+      "name": "JSON 格式化",
+      "version": "1.0.0",
+      "allowHosts": [
+        "demo.invalid"
+      ],
+      "path": "dist/demo.json.qbpkg",
+      "sha256": "cecf9840aa42dde1a5e802ae4539a23849717385914618f3df834974c5b852ba",
+      "description": "把压缩的 JSON 字符串格式化输出。纯本地计算，不访问网络。",
+      "author": "demo"
+    },
+    {
+      "id": "demo.time",
+      "name": "时间戳转换",
+      "version": "1.0.0",
+      "allowHosts": [
+        "demo.invalid"
+      ],
+      "path": "dist/demo.time.qbpkg",
+      "sha256": "1be6a5cdf03e027a7750421d4220468b7384060bc6c1a287b8b9dac4b1719680",
+      "description": "Unix 时间戳与可读时间互转，演示 fn.ts10 / fn.ts13。纯本地计算，不访问网络。",
+      "author": "demo"
+    },
+    {
+      "id": "demo.gzip",
+      "name": "Gzip 压缩测试",
+      "version": "1.0.0",
+      "allowHosts": [
+        "demo.invalid"
+      ],
+      "path": "dist/demo.gzip.qbpkg",
+      "sha256": "370521b5e20c611f52913fb700b0bce145a5a478717669e0388d143df59d6670",
+      "description": "对输入文本做 gzip 压缩并输出 hex，演示 fn.gz。纯本地计算，不访问网络。",
+      "author": "demo"
+    },
+    {
+      "id": "demo.aes",
+      "name": "AES 加密演示",
+      "version": "1.0.0",
+      "allowHosts": [
+        "demo.invalid"
+      ],
+      "path": "dist/demo.aes.qbpkg",
+      "sha256": "f8b62b97d324dc21ffe9313aef4b1656298bb543b389991bf210ad2a03988cec",
+      "description": "AES-CBC / AES-ECB 加密演示（固定 key/iv）。纯本地计算，不访问网络。",
+      "author": "demo"
+    },
+    {
+      "id": "demo.assert",
+      "name": "断言与条件跳转",
+      "version": "1.0.0",
+      "allowHosts": [
+        "demo.invalid"
+      ],
+      "path": "dist/demo.assert.qbpkg",
+      "sha256": "8a6112ffc07542483c4732cc6ab7c45b3ea5d9f550a87e88ca08d247c916b0b8",
+      "description": "演示 assert 操作符、branch 条件分支、onFail 处理。纯本地计算，不访问网络。",
+      "author": "demo"
     }
   ]
 }
