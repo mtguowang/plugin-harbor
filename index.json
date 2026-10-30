@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "name": "插件库",
-  "updatedAt": "2026-10-26T17:27:10Z",
+  "updatedAt": "2026-10-30T05:48:21Z",
   "plugins": [
     {
       "id": "ct.login",
@@ -53,6 +53,18 @@
       "path": "dist/unicom.login.qbpkg",
       "sha256": "f224127eb4b56c3466c1878c2098d8d2173bae0b73e3d15112fc440fde17fecd",
       "description": "中国联通短信验证码登录：RSA(PKCS#1 v1.5) 加密手机号与验证码，经 m.client.10010.com 下发短信、登录取 token_online / ecs_token。失败时显示服务端真实原因，验证码错误可重试。",
+      "author": "protocol-reverse"
+    },
+    {
+      "id": "pony.login",
+      "name": "小马智行登录助手",
+      "version": "1.0.0",
+      "allowHosts": [
+        "app.xiaomazhixing.com"
+      ],
+      "path": "dist/pony.login.qbpkg",
+      "sha256": "34ec9dc32d51729017f6c15fa99e089909a56634105f165e2428747ce28d4ebf",
+      "description": "小马智行（Pony Pilot）手机号验证码登录，产出 Flask session cookie 作为 token。用 set.js 逃生舱 + forge 库直接构造 protobuf bytes 并做 RSA 加密，绕过 fn.rsaPkcs1 的字符串编码问题。",
       "author": "protocol-reverse"
     }
   ]
