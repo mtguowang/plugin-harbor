@@ -1,7 +1,7 @@
 {
   "id": "zto.member",
   "name": "中通会员助手",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "engine": ">=1.0 <2.0",
   "author": "protocol-reverse",
   "description": "中通会员三条链路：①密码登录 ②短信注册 ③短信找回密码。直连 hdgateway.zto.com + mapi.zto.com，完整保留 PC 端伪装头（Origin/Referer/桌面 Chrome UA/x-clientCode/x-token）；「安全验证」为顶象滑块，走 CONTRACT.md §4.4.1 的 ui.type=webview：内联 HTML 加载 cdn.dingxiang-inc.com 的 captcha-ui v5，JS 回传 token 作为 x-captcha-code；x-captcha-id 仍取 mapi 的 captcha/image2 下发的 id。",
@@ -54,9 +54,18 @@
         "label": "请选择操作",
         "input": "mode",
         "options": [
-          {"value": "1", "label": "密码登录"},
-          {"value": "2", "label": "注册新账号"},
-          {"value": "3", "label": "找回密码"}
+          {
+            "value": "1",
+            "label": "密码登录"
+          },
+          {
+            "value": "2",
+            "label": "注册新账号"
+          },
+          {
+            "value": "3",
+            "label": "找回密码"
+          }
         ],
         "hint": "本步只在表单未选择模式时出现"
       }
@@ -89,7 +98,6 @@
       "id": "login",
       "type": "request",
       "when": "input.mode == '1'",
-      "goto": "loginDone",
       "request": {
         "method": "POST",
         "url": "{{vars.base}}/auth_account_loginByPassword",
@@ -132,13 +140,29 @@
           "path": "$.message",
           "optional": true,
           "default": ""
+        },
+        {
+          "name": "statusCode",
+          "from": "json",
+          "path": "$.statusCode",
+          "optional": true,
+          "default": ""
         }
-      ],
-      "assert": {
-        "json": "$.status",
-        "equals": "true",
-        "message": "中通登录失败"
-      }
+      ]
+    },
+    {
+      "id": "loginCheck",
+      "type": "set",
+      "when": "(input.mode == '1') && (steps.login.status != true)",
+      "set": {
+        "vars": {
+          "abortFlag": "{{fn.hex(fn.unhex('zz'))}}"
+        }
+      },
+      "onFail": {
+        "message": "中通登录失败：{{steps.login.message}}（statusCode={{steps.login.statusCode}}）"
+      },
+      "goto": "loginDone"
     },
     {
       "id": "loginDone",
@@ -254,15 +278,27 @@
           "path": "$.message",
           "optional": true,
           "default": ""
+        },
+        {
+          "name": "statusCode",
+          "from": "json",
+          "path": "$.statusCode",
+          "optional": true,
+          "default": ""
         }
-      ],
-      "assert": {
-        "json": "$.status",
-        "equals": "true",
-        "message": "图形验证码获取失败"
+      ]
+    },
+    {
+      "id": "getCaptchaCheck",
+      "type": "set",
+      "when": "(input.mode != '1') && (steps.getCaptcha.status != true)",
+      "set": {
+        "vars": {
+          "abortFlag": "{{fn.hex(fn.unhex('zz'))}}"
+        }
       },
       "onFail": {
-        "message": "图形验证码获取失败：{{response.message}}"
+        "message": "图形验证码获取失败：{{steps.getCaptcha.message}}（statusCode={{steps.getCaptcha.statusCode}}）"
       }
     },
     {
@@ -337,15 +373,27 @@
           "path": "$.message",
           "optional": true,
           "default": ""
+        },
+        {
+          "name": "statusCode",
+          "from": "json",
+          "path": "$.statusCode",
+          "optional": true,
+          "default": ""
         }
-      ],
-      "assert": {
-        "json": "$.status",
-        "equals": "true",
-        "message": "注册短信发送失败"
+      ]
+    },
+    {
+      "id": "regSendCodeCheck",
+      "type": "set",
+      "when": "(input.mode == '2') && (steps.regSendCode.status != true)",
+      "set": {
+        "vars": {
+          "abortFlag": "{{fn.hex(fn.unhex('zz'))}}"
+        }
       },
       "onFail": {
-        "message": "注册短信发送失败：{{response.message}}"
+        "message": "注册短信发送失败：{{steps.regSendCode.message}}（statusCode={{steps.regSendCode.statusCode}}）"
       }
     },
     {
@@ -397,7 +445,6 @@
       "id": "regSubmit",
       "type": "request",
       "when": "input.mode == '2'",
-      "goto": "regDone",
       "request": {
         "method": "POST",
         "url": "{{vars.base}}/auth_account_registerBySmsVerifyCode",
@@ -433,16 +480,29 @@
           "path": "$.message",
           "optional": true,
           "default": ""
+        },
+        {
+          "name": "statusCode",
+          "from": "json",
+          "path": "$.statusCode",
+          "optional": true,
+          "default": ""
         }
-      ],
-      "assert": {
-        "json": "$.status",
-        "equals": "true",
-        "message": "注册失败"
+      ]
+    },
+    {
+      "id": "regSubmitCheck",
+      "type": "set",
+      "when": "(input.mode == '2') && (steps.regSubmit.status != true)",
+      "set": {
+        "vars": {
+          "abortFlag": "{{fn.hex(fn.unhex('zz'))}}"
+        }
       },
       "onFail": {
-        "message": "注册失败：{{response.message}}"
-      }
+        "message": "注册失败：{{steps.regSubmit.message}}（statusCode={{steps.regSubmit.statusCode}}）"
+      },
+      "goto": "regDone"
     },
     {
       "id": "regDone",
@@ -530,15 +590,27 @@
           "path": "$.message",
           "optional": true,
           "default": ""
+        },
+        {
+          "name": "statusCode",
+          "from": "json",
+          "path": "$.statusCode",
+          "optional": true,
+          "default": ""
         }
-      ],
-      "assert": {
-        "json": "$.status",
-        "equals": "true",
-        "message": "找回密码短信发送失败"
+      ]
+    },
+    {
+      "id": "forgotSendCodeCheck",
+      "type": "set",
+      "when": "(input.mode == '3') && (steps.forgotSendCode.status != true)",
+      "set": {
+        "vars": {
+          "abortFlag": "{{fn.hex(fn.unhex('zz'))}}"
+        }
       },
       "onFail": {
-        "message": "找回密码短信发送失败：{{response.message}}"
+        "message": "找回密码短信发送失败：{{steps.forgotSendCode.message}}（statusCode={{steps.forgotSendCode.statusCode}}）"
       }
     },
     {
@@ -593,15 +665,27 @@
           "path": "$.message",
           "optional": true,
           "default": ""
+        },
+        {
+          "name": "statusCode",
+          "from": "json",
+          "path": "$.statusCode",
+          "optional": true,
+          "default": ""
         }
-      ],
-      "assert": {
-        "json": "$.status",
-        "equals": "true",
-        "message": "短信验证码校验失败"
+      ]
+    },
+    {
+      "id": "forgotVerifyCheck",
+      "type": "set",
+      "when": "(input.mode == '3') && (steps.forgotVerify.status != true)",
+      "set": {
+        "vars": {
+          "abortFlag": "{{fn.hex(fn.unhex('zz'))}}"
+        }
       },
       "onFail": {
-        "message": "短信验证码校验失败：{{response.message}}"
+        "message": "短信验证码校验失败：{{steps.forgotVerify.message}}（statusCode={{steps.forgotVerify.statusCode}}）"
       }
     },
     {
@@ -640,7 +724,6 @@
       "id": "forgotReset",
       "type": "request",
       "when": "input.mode == '3'",
-      "goto": "forgotDone",
       "request": {
         "method": "POST",
         "url": "{{vars.base}}/auth_account_forgotPasswordByVerifyCode",
@@ -677,16 +760,29 @@
           "path": "$.message",
           "optional": true,
           "default": ""
+        },
+        {
+          "name": "statusCode",
+          "from": "json",
+          "path": "$.statusCode",
+          "optional": true,
+          "default": ""
         }
-      ],
-      "assert": {
-        "json": "$.status",
-        "equals": "true",
-        "message": "密码重置失败"
+      ]
+    },
+    {
+      "id": "forgotResetCheck",
+      "type": "set",
+      "when": "(input.mode == '3') && (steps.forgotReset.status != true)",
+      "set": {
+        "vars": {
+          "abortFlag": "{{fn.hex(fn.unhex('zz'))}}"
+        }
       },
       "onFail": {
-        "message": "密码重置失败：{{response.message}}"
-      }
+        "message": "密码重置失败：{{steps.forgotReset.message}}（statusCode={{steps.forgotReset.statusCode}}）"
+      },
+      "goto": "forgotDone"
     },
     {
       "id": "forgotDone",
